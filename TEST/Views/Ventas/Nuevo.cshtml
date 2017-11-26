@@ -1,0 +1,423 @@
+﻿@model TEST.Models.NuevaVentaModel
+
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        var clientes;
+        var articulos;
+        $(window).load(function () {
+            $.ajax({
+                url: '/Ventas/ObtenerCliente',
+                type: 'get',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+
+                    var availableTags = [];
+                    for (var prop in result.Data) {
+                        clientes = result.Data;
+
+                        availableTags.push(result.Data[prop].NombreCompleto);
+                    }
+
+                    $("#txtCliente").autocomplete({
+                        source: availableTags,
+                        minLength: 3,
+                        select: function (event, ui) {
+                            setTimeout(BuscarCliente, 500)
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+            $.ajax({
+                url: '/Ventas/ObtenerArticulos',
+                type: 'get',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+
+                    var availableArticulosTags = [];
+                    articulos = result.Data;
+                    for (var prop in result.Data) {
+                        availableArticulosTags.push(result.Data[prop].DescripcionCompleta);
+                    }
+
+                    $("#txtArticulo").autocomplete({
+                        source: availableArticulosTags,
+                        minLength: 3
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+            $.ajax({
+                url: '/Ventas/ObtenerCliente',
+                type: 'get',
+                cache: false,
+                contentType: 'application/json; charset=utf-8',
+                dataType: 'json',
+                success: function (result) {
+
+                    var availableTags = [];
+                    for (var prop in result.Data) {
+                        clientes = result.Data;
+
+                        availableTags.push(result.Data[prop].NombreCompleto);
+                    }
+
+                    $("#txtCliente").autocomplete({
+                        source: availableTags,
+                        select: function (event, ui) {
+                            setTimeout(BuscarCliente, 500)
+                        }
+                    });
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        });
+
+        function BuscarCliente() {
+            var codigo = $("#txtCliente").val();
+
+            for (var prop in clientes) {
+                if (clientes[prop].NombreCompleto == codigo) {
+                    $("#TxtRFC").html(clientes[prop].RFC);
+                }
+            }
+        }
+
+        function AgregarArticulo() {
+            var clavearticulo = $("#txtArticulo").val();
+            for (var prop in clientes) {
+                if (clientes[prop].DescripcionCompleta == clavearticulo) {
+
+                    if (clientes[prop].Existencia == 0) {
+                        $("#MenssagesSection").html('El artículo seleccionado no cuenta con existencia, favor de verificar');
+                        $("#MenssagesSection").show(0).delay(5000).hide(0);
+                        return;
+                    }
+
+                }
+            }
+
+
+            var articuloParam = new Object();
+            articuloParam.ArticuloID = $("#txtArticulo").val().split(" ")[0];
+            $.ajax({
+                url: "/Ventas/AgregarArticuloVenta",
+                type: "POST",
+                data: articuloParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+
+                    $("#GridArticulos").html(result.Data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+
+
+
+        }
+
+        function EliminarArticulo(element) {
+            var Guid = element.getAttribute("GUID");
+
+            var articuloParam = new Object();
+            articuloParam.GUID = Guid;
+            $.ajax({
+                url: "/Ventas/EliminarArticulo",
+                type: "POST",
+                data: articuloParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+
+                    $("#GridArticulos").html(result.Data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+        }
+        function ValidarExistencia(element) {
+            var valor = parseFloat(element.value).toFixed(2) * parseFloat(element.getAttribute("PrecioVenta")).toFixed(2);
+            $("#" + element.getAttribute("GUID")).html(valor);
+
+            if (parseInt(element.value) > parseInt(element.getAttribute("Existencia"))) {
+                debugger
+                $("#MenssagesSection").html('El la cantidad seleccionada es mayor a la existencia');
+                $("#MenssagesSection").show(0).delay(2000).hide(0);
+                return;
+            }
+
+
+            var ImporteTotal = 0.00;
+            $("#GridDetalle div span").each(function () {
+                ImporteTotal = ImporteTotal + $(this).html();
+            });
+
+            var Enganche = ($("#TxtPorcentajeEnganche").val() / 100) * ImporteTotal;
+            $("#EngancheVenta").html(parseFloat(Enganche).toFixed(2));
+
+
+            var Bonificacion = Enganche * (($("#TxtTasaFinanciamiento").val() * $("#TxtPlazoMaximo").val()) / 100);
+            $("#BonificacionVenta").html(parseFloat(Bonificacion).toFixed(2));
+
+            var TotalAdeudo = parseFloat(ImporteTotal).toFixed(2) - parseFloat(Enganche).toFixed(2) - parseFloat(Bonificacion).toFixed(2);
+            $("#TotalVenta").html(parseFloat(TotalAdeudo).toFixed(2));
+
+
+            var Guid = element.getAttribute("GUID");
+
+            var articuloParam = new Object();
+            articuloParam.GUID = Guid;
+            articuloParam.Cantidad = element.value;
+            $.ajax({
+                url: "/Ventas/AgregarArticuloVenta",
+                type: "POST",
+                data: articuloParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+
+        }
+
+        function ValidarVenta() {
+            var MostrarError = true;
+            var clavearticulo = $("#txtCliente").val();
+            for (var prop in clientes) {
+                if (clientes[prop].NombreCompleto == clavearticulo) {
+                    MostrarError = false;
+                }
+            }
+
+            var CantidadItems = 0;
+            $("#GridDetalle div input:text").each(function () {
+                CantidadItems = CantidadItems + parseInt($(this).val());
+            });
+
+            if (CantidadItems == 0) {
+                MostrarError = true;
+            }
+
+            //ToDo Validar Existencia
+
+            if (MostrarError) {
+                $("#MenssagesSection").html('Los datos ingresados no son correctos, favor de verificar');
+                $("#MenssagesSection").show(0).delay(5000).hide(0);
+                return;
+            }
+
+            $("#GridDetalle div input").each(function () {
+                $(this).attr("disabled", "disabled");
+            });
+
+            $("#DivSiguiente").css('display', 'none');
+            $("#DivGuardar").css('display', 'block');
+
+            $.ajax({
+                url: "/Ventas/CalcularAbonoMensual",
+                type: "POST",
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    $("#GridAbonoMensual").html(result.Data);
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+
+        }
+
+        function GuardarVenta() {
+            var RadioHTML = $('input[name="abono"]');
+            var plazo = RadioHTML.filter(':checked').val();
+
+            if (plazo == undefined) {
+                $("#MenssagesSection").html('Debe seleccionar un plazo para realizar el pago de su compra');
+                $("#MenssagesSection").show(0).delay(5000).hide(0);
+                return;
+            }
+
+            var ventaParam = new Object();
+            ventaParam.Plazo = plazo;
+            ventaParam.FoliadorVentaID = parseInt($("#TxtFoliadorVentaId").val());
+            ventaParam.ClienteID = $("#txtCliente").val().split(' ')[0];
+            ventaParam.TotalAdeudo = parseFloat($("#TotalVenta").html());
+
+            $.ajax({
+                url: "/Ventas/GuardarVenta",
+                type: "POST",
+                data: ventaParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    window.location.href = "/Ventas/Index?Success=OK";
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        function Cancelar() {
+            window.location.href = "/Ventas/Index";
+        }
+    </script>
+
+    <style type="text/css">
+        .DivVenta {
+            border: none;
+            padding: 3px;
+            border-radius: 5px;
+            -ms-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-color: #347AB8;
+            color: rgba(255,255,255,0.7);
+        }
+
+        .TxtVenta {
+            font-size: 14px;
+            box-sizing: border-box;
+            border: 1px solid gray;
+            box-shadow: none;
+            outline: none;
+            background: transparent;
+            width: 100%;
+            padding: 0 15px;
+            line-height: 40px;
+            height: 40px;
+        }
+    </style>
+}
+
+
+
+<div class="row" style="display:none;">
+    <input type="text" id="TxtPlazoMaximo" value="@Model.PlazoMaximo">
+    <input type="text" id="TxtPorcentajeEnganche" value="@Model.PorcentajeEnganche">
+    <input type="text" id="TxtTasaFinanciamiento" value="@Model.TasaFinanciamiento">
+    <input type="text" id="TxtFoliadorVentaId" value="@Model.FoliadorVentaID">
+</div>
+
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <div style="width:100%; float:left;">
+            <div style="width:100%; float:left; height: 40px; background-color:aquamarine; border-radius: 5px 5px 0px 0px;">
+                <span style="padding: 10px;float: left;"> Registro de Ventas</span>
+            </div>
+            <div style="width:100%; float:left; border: 1px solid aquamarine;">
+                <div style="float:right; color: green;">
+                    Folio Venta: @Model.FoliadorVentaID.ToString("0000")
+                </div>
+
+                <div style="float:left;margin-left:25px; margin-top:10px; margin-bottom:10px;">
+                    <div class="DivVenta" style="width:60px; float:left;">
+                        Cliente:
+                    </div>
+                    <div style="float:left;width:200px; margin-left:10px;">
+                        <input type="text" value="Buscar cliente:..." id="txtCliente" onfocus="if (this.value == 'Buscar cliente:...') { this.value = ''; }" onblur="if (this.value == '') { this.value = 'Buscar cliente:...'; }">
+
+                    </div>
+                    <span>RFC: </span>
+                    <span id="TxtRFC"></span>
+                </div>
+                <div style="height:1px; width:80%; margin-left:10%; background-color: green; float:left"></div>
+                <div style="float:left;margin-left:25px; margin-top:10px; margin-bottom:10px;">
+                    <div class="DivVenta" style="width:60px; float:left;">
+                        Articulo:
+                    </div>
+                    <div style="float:left;width:200px; margin-left:10px;">
+                        <input type="text" value="Buscar Articulo:..." id="txtArticulo" onfocus="if (this.value == 'Buscar Articulo:...') { this.value = ''; }" onblur="if (this.value == '') { this.value = 'Buscar Articulo:...'; }">
+                    </div>
+                    <a onclick="AgregarArticulo();"><img src="~/Content/Imagenes/mas.jpg" style="height:25px;" /></a>
+                </div>
+                <div style="width:100%; float:left; border: 1px solid gray;"></div>
+
+                <div id="GridArticulos">
+                    <div style="float:left; width:100%;">
+                        <div style="float:left;width:250px;">Descripción Articulo</div>
+                        <div style="float:left;width:150px;">Modelo</div>
+                        <div style="float:left;width:100px;">Cantidad</div>
+                        <div style="float:left;width:100px;">Precio</div>
+                        <div style="float:left;width:100px;">Importe</div>
+                    </div>
+                </div>
+
+                <div style="width:100%; float:left; border: 1px solid gray; margin-top:50px;"></div>
+
+                <div style="float:right;  font-size:12px; text-align:right; margin-right:12px; margin-bottom:20px;">
+
+                    <div style="float:right; width:100px; margin-top:10px;"><span id="EngancheVenta">0.00</span></div>
+                    <div style="float:right;width: 65px;background-color:gray;padding-right: 5px;padding-left: 5px; margin-top:10px;">Enganche:</div>
+                    <br />
+                    <div style="float:right; width:100px; margin-top:10px;"><span id="BonificacionVenta">0.00</span></div>
+                    <div style="float:right;width: 150px;background-color:gray;padding-right: 5px;padding-left: 5px; margin-top:10px;">Bonificación Enganche:</div>
+                    <br />
+                    <div style="float:right; width:100px; margin-top:10px;"><span id="TotalVenta">0.00</span></div>
+                    <div style="float:right;width: 150px;background-color:gray;padding-right: 5px;padding-left: 5px; margin-top:10px;">Total:</div>
+                </div>
+            </div>
+
+            <div id="DivSiguiente" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:20px;">
+                <div class="DivVenta" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+                    Cancelar
+                </div>
+                <div class="DivVenta" onclick="ValidarVenta();" style="width:60px; float:left;">
+                    Siguiente
+                </div>
+            </div>
+
+            <div id="GridAbonoMensual" style="width:100%; font-size:12px;">
+
+            </div>
+
+            <div id="DivGuardar" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:20px; display:none;">
+                <div class="DivVenta" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+                    Cancelar
+                </div>
+                <div class="DivVenta" onclick="GuardarVenta();" style="width:60px; float:left;">
+                    Guardar
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
+

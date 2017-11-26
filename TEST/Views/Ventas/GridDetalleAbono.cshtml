@@ -1,0 +1,19 @@
+﻿@model List<TEST.Models.AbonoMensualModel>
+
+<div style="float:left; width:100%; text-align: center; background-color:mediumpurple; padding:6px; margin-top:5px; margin-bottom:5px;">
+    ABONOS MENSUALES
+</div>
+
+@foreach (var item in Model)
+{
+    <div style="float:left; width:100%;margin-bottom:5px;" id="GridDetalleAbono">
+        <div style="float:left;width:150PX;">@item.Plazo ABONOS DE</div>
+        <div style="float:left;width:150px;">$ @item.ImporteAbono.ToString("0.00")</div>
+        <div style="float:left;width:230px;">TOTAL A PAGAR $ @item.TotalPagar.ToString("0.00")</div>
+        <div style="float:left;width:170px;">SE AHORRA $ @item.ImporteAhorra.ToString("0.00")</div>
+        <div style="float:left;width:20px;"><input type="radio" name="abono" value="@item.Plazo"></div>
+    </div>
+
+
+}
+

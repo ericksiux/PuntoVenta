@@ -1,0 +1,73 @@
+﻿@model List<TEST.Models.ClienteModel>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(window).load(function () {
+
+            if (window.location.href.includes("Success")) {
+                $("#MsjGlobal").html('<b>Bien Hecho!</b>, El cliente ha sido registrado correctamente');
+                $("#MsjGlobal").show(0).delay(5000).hide(0);
+            }
+
+        });
+
+        function EditarCliente(element)
+        {
+            window.location.href = "/Clientes/Nuevo?ClienteID=" + element.getAttribute("ClienteID");
+        }
+
+
+        function Nuevo() {
+            window.location.href = "/Clientes/Nuevo?ClienteID=0";
+        }
+    </script>
+}
+
+<div class="row">
+    <div class="col-md-2">
+    </div>
+    <div class="col-md-8">
+        <div style="float:right;">
+            <a onclick="Nuevo();">
+                <img src="~/Content/Imagenes/NuevoCliente.jpg" style="float: right;" />
+            </a>
+        </div>
+
+        <div style="width: 100%;margin-left: 15px;margin-bottom: 10px; color:#4cb2b4; float:left; clear:left;">
+            Clientes Registrados
+        </div>
+        <div style="width: 100%;background-color: #4cb2b4;height: 2px;float:left; clear:left;">
+
+        </div>
+        <div style="width: 96%; margin-left:2%; background-color:#fececd; height:28px; color:#998c66;float:left; clear:left;">
+            <div style="width: 15%; float:left;padding: 4px;">
+                Clave Cliente
+            </div>
+            <div style="width: 13%; float:left;padding: 4px;">
+                Nombre
+            </div>
+            <div style="width: 40%; float:left;padding: 4px;">
+                
+            </div>
+        </div>
+
+        @foreach (var item in Model)
+        {
+            <div style="width: 96%; margin-left:2%; background-color:#fececd; height:28px; color:#1e1e1e;float:left; clear:left;">
+                <div style="width: 15%; float:left;padding: 4px;">
+                    @item.ClienteID.ToString("000")
+                </div>
+                <div style="width: 40%; float:left;padding: 4px;">
+                    @item.Nombre
+                </div>
+                <div style="width: 13%; float:left;padding: 4px;">
+                    <a ClienteID="@item.ClienteID" onclick="EditarCliente(this);"><img src="~/Content/Imagenes/Editar.jpg" style="height:25px;" /></a>
+                </div>
+            </div>
+
+
+        }
+    </div>
+</div>

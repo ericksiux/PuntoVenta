@@ -1,0 +1,162 @@
+﻿@model TEST.Models.ClienteModel
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function GuardarCliente() {
+
+            var CamposVacios = new Array;
+            var Errores = false;
+
+            if ($("#TxtNombre").val() == "")
+            {
+                CamposVacios.push('Nombre')
+            }
+
+            if ($("#TxtApellidoPaterno").val() == "") {
+                CamposVacios.push('Apellido Paterno')
+            }
+
+            if ($("#TxtApellidoMaterno").val() == "") {
+                CamposVacios.push('Apellido Materno')
+            }
+
+            if ($("#TxtRFC").val() == "") {
+                CamposVacios.push('RFC')
+            }
+
+            if (CamposVacios.length > 0)
+            {
+                alert alert-success
+                $("#MsjGlobal").
+                $("#MsjGlobal").html('No es posible continuar, debe ingresar ' + CamposVacios.join(" , ") + ' es obligatorio');
+                $("#MsjGlobal").show(0).delay(5000).hide(0);
+                return;
+            }
+
+            var clienteParam = new Object();
+            clienteParam.ClienteID = parseInt($("#TxtClienteID").val());
+            clienteParam.Nombre = $("#TxtNombre").val();
+            clienteParam.ApellidoPaterno = $("#TxtApellidoPaterno").val();
+            clienteParam.ApellidoMaterno = $("#TxtApellidoMaterno").val();
+            clienteParam.RFC = $("#TxtRFC").val();
+
+            $.ajax({
+                url: "/Clientes/GuardarCliente",
+                type: "POST",
+                data: clienteParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    window.location.href = "/Clientes/Index?Success=OK";
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        function Cancelar() {
+            window.location.href = "/Clientes/Index";
+        }
+    </script>
+
+    <style type="text/css">
+        .DivCtes {
+            border: none;
+            padding: 3px;
+            border-radius: 5px;
+            -ms-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-color: #347AB8;
+            color: rgba(255,255,255,0.7);
+        }
+    </style>
+}
+
+<div style="width:100%; float:left;">
+    <div style="width:100%; float:left; height: 40px; background-color:aquamarine; border-radius: 5px 5px 0px 0px;">
+        <span style="padding: 10px;float: left;">Registro de Clientes</span>
+    </div>
+    <div style="width:100%; float:left; border: 1px solid aquamarine;">
+        <div style="float:right; color: green;margin-right:20%;">
+            Clave: @Model.ClienteID.ToString("0000")
+        </div>
+
+
+        <div class="row" style="margin-top:40px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Nombre:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtNombre" value="@Model.Nombre">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Apellido Paterno:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtApellidoPaterno" value="@Model.ApellidoPaterno">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Apellido Materno:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtApellidoMaterno" value="@Model.ApellidoMaterno">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px; margin-bottom:40px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                RFC:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtRFC" value="@Model.RFC" style="width:140px;">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
+
+
+    <div class="row" style="display:none;">
+        <input type="text" id="TxtClienteID" value="@Model.ClienteID">
+    </div>
+
+
+
+</div>
+
+
+
+<div id="DivGuardar" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:40px;">
+    <div class="DivCtes" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+        Cancelar
+    </div>
+    <div class="DivCtes" onclick="GuardarCliente();" style="width:60px; float:left;">
+        Guardar
+    </div>
+</div>
