@@ -249,6 +249,17 @@ namespace TEST.Controllers
 
                 ventaDAO.Guardar(ventaDTO);
 
+                var ArticulosVenta = (List<GridArticuloVentaModel>)Session["modelGridArticuloVenta"];
+                ArticuloDAO DAO = new ArticuloDAO();
+                ArticuloDTO articulo = new ArticuloDTO();
+                foreach (var item in ArticulosVenta)
+                {
+                    articulo.ArticuloID = item.ArticuloID;
+                    articulo.Existencia = item.Existencia - item.Cantidad;
+
+                    DAO.ActualizarInventario(articulo);
+                }
+
                 return Json(new { Success = 1 }, JsonRequestBehavior.AllowGet);
             }
             catch (Exception ex)

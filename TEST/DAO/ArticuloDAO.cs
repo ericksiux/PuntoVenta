@@ -47,5 +47,22 @@ namespace TEST.DAO
             }
 
         }
+
+        public void ActualizarInventario(ArticuloDTO articulo)
+        {
+            try
+            {
+                IList<IDbDataParameter> parameters = new List<IDbDataParameter>();
+                parameters.Add(new SqlParameter { ParameterName = "@ArticuloID", Value = articulo.ArticuloID });
+                parameters.Add(new SqlParameter { ParameterName = "@Existencia", Value = articulo.Existencia });
+
+                DALHelper.Create("Articulo_ActualizarInventario", parameters);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
+
+        }
     }
 }

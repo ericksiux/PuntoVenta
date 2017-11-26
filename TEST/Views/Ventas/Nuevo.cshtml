@@ -238,6 +238,9 @@
             });
 
             $("#DivSiguiente").css('display', 'none');
+
+            $("#DivArticulo").css('display', 'none');
+            
             $("#DivGuardar").css('display', 'block');
 
             $.ajax({
@@ -353,7 +356,7 @@
                     <span id="TxtRFC"></span>
                 </div>
                 <div style="height:0px; width:80%; margin-left:10%; background-color: green; float:left"></div>
-                <div style="float:left;margin-left:25px; margin-top:10px; margin-bottom:10px;">
+                <div id="DivArticulo" style="float:left;margin-left:25px; margin-top:10px; margin-bottom:10px;">
                     <div class="DivVenta" style="width:60px; float:left;">
                         Articulo:
                     </div>
