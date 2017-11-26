@@ -7,8 +7,7 @@
         $(window).load(function () {
 
             if (window.location.href.includes("Success")) {
-                $("#MsjGlobal").html('<b>Bien Hecho!</b>, Tu venta ha sido registrada correctamente');
-                $("#MsjGlobal").show(0).delay(5000).hide(0);
+                ShowMessage('<b>Bien Hecho!</b>, Tu venta ha sido registrada correctamente', 'alert-success');
             }
 
         });

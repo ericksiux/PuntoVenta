@@ -17,7 +17,7 @@ namespace TEST.DAO.Mapper
             {
                 dto.PorcentajeEnganche = Convert.ToDecimal(row["PorcentajeEnganche"]);
                 dto.TasaFinanciamiento = Convert.ToDecimal(row["TasaFinanciamiento"]);
-                dto.PlazoMaximo = Convert.ToDecimal(row["PlazoMaximo"]);
+                dto.PlazoMaximo = Convert.ToInt32(row["PlazoMaximo"]);
             }
 
             return dto;

@@ -223,6 +223,7 @@
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\ArticuloModel.cs" />
     <Compile Include="Models\ClienteModel.cs" />
+    <Compile Include="Models\ConfiguracionGeneralModel.cs" />
     <Compile Include="Models\GridArticuloVentaModel.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
@@ -252,6 +253,8 @@
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <None Include="Properties\PublishProfiles\Test.pubxml" />
+    <None Include="Properties\PublishProfiles\TEST201711 - Web Deploy.pubxml" />
     <None Include="Properties\PublishProfiles\TEST20171124093256.pubxml" />
     <None Include="Properties\PublishProfiles\VendimiaAPP.pubxml" />
     <None Include="Properties\PublishProfiles\VendimiaCLN - Web Deploy.pubxml" />

@@ -1,66 +1,159 @@
 ﻿@model TEST.Models.ArticuloModel
 
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
 
-@using (Html.BeginForm()) 
-{
-    @Html.AntiForgeryToken()
-    
-    <div class="form-horizontal">
-        <h4>ArticuloModel</h4>
-        <hr />
-        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-        <div class="form-group">
-            @Html.LabelFor(model => model.ArticuloID, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.ArticuloID, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.ArticuloID, "", new { @class = "text-danger" })
+    <script>
+        function GuardarArticulo() {
+
+            var CamposVacios = new Array;
+            var Errores = false;
+
+            if ($("#TxtDescripcion").val() == "")
+            {
+                CamposVacios.push('Descripcion')
+            }
+
+            if ($("#TxtDescripcionModelo").val() == "") {
+                CamposVacios.push('Descripcion Modelo')
+            }
+
+            if ($("#TxtPrecio").val() == "" || !$.isNumeric($("#TxtPrecio").val())) {
+                CamposVacios.push('Precio')
+            }
+
+            if ($("#TxtExistencia").val() == "" || !$.isNumeric($("#TxtExistencia").val())) {
+                CamposVacios.push('Existencia')
+            }
+
+            if (CamposVacios.length > 0)
+            {
+                ShowMessage('No es posible continuar, debe ingresar ' + CamposVacios.join(" , ") + ' es obligatorio', 'alert-danger');
+                return;
+            }
+
+            var articuloParam = new Object();
+            articuloParam.ArticuloID = parseInt($("#TxtArticuloID").val());
+            articuloParam.Descripcion = $("#TxtDescripcion").val();
+            articuloParam.DescripcionModelo = $("#TxtDescripcionModelo").val();
+            articuloParam.Precio = parseFloat( $("#TxtPrecio").val() ).toFixed(2);
+            articuloParam.Existencia = parseInt( $("#TxtExistencia").val() );
+
+            $.ajax({
+                url: "/Articulos/GuardarArticulo",
+                type: "POST",
+                data: articuloParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    window.location.href = "/Articulos/Index?Success=OK";
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        function Cancelar() {
+            window.location.href = "/Articulos/Index";
+        }
+    </script>
+
+    <style type="text/css">
+        .DivArticulos {
+            border: none;
+            padding: 3px;
+            border-radius: 5px;
+            -ms-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-color: #347AB8;
+            color: rgba(255,255,255,0.7);
+        }
+    </style>
+}
+
+<div style="width:100%; float:left;">
+    <div style="width:100%; float:left; height: 40px; background-color:aquamarine; border-radius: 5px 5px 0px 0px;">
+        <span style="padding: 10px;float: left;">Registro de Clientes</span>
+    </div>
+    <div style="width:100%; float:left; border: 1px solid aquamarine;">
+        <div style="float:right; color: green;margin-right:20%;">
+            Clave: @Model.ArticuloID.ToString("0000")
+        </div>
+
+
+        <div class="row" style="margin-top:40px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Descripción:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtDescripcion" value="@Model.Descripcion">
+            </div>
+            <div class="col-md-2">
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Descripcion, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Descripcion, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Descripcion, "", new { @class = "text-danger" })
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Modelo:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtDescripcionModelo" value="@Model.DescripcionModelo">
+            </div>
+            <div class="col-md-2">
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.DescripcionModelo, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.DescripcionModelo, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.DescripcionModelo, "", new { @class = "text-danger" })
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Precio:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtPrecio" value="@Model.Precio">
+            </div>
+            <div class="col-md-2">
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.Existencia, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Existencia, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Existencia, "", new { @class = "text-danger" })
+        <div class="row" style="margin-top:10px; margin-bottom:40px;">
+            <div class="col-md-2">
             </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.Precio, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.Precio, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.Precio, "", new { @class = "text-danger" })
+            <div class="col-md-2" style="text-align:right">
+                Existencia:
             </div>
-        </div>
-
-        <div class="form-group">
-            <div class="col-md-offset-2 col-md-10">
-                <input type="submit" value="Create" class="btn btn-default" />
+            <div class="col-md-2">
+                <input type="text" id="TxtExistencia" value="@Model.Existencia" style="width:140px;">
+            </div>
+            <div class="col-md-2">
             </div>
         </div>
     </div>
-}
 
-<div>
-    @Html.ActionLink("Back to List", "Index")
+
+    <div class="row" style="display:none;">
+        <input type="text" id="TxtArticuloID" value="@Model.ArticuloID">
+    </div>
+
+
+
 </div>
 
-@section Scripts {
-    @Scripts.Render("~/bundles/jqueryval")
-}
+
+
+<div id="DivGuardar" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:40px;">
+    <div class="DivArticulos" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+        Cancelar
+    </div>
+    <div class="DivArticulos" onclick="GuardarArticulo();" style="width:60px; float:left;">
+        Guardar
+    </div>
+</div>

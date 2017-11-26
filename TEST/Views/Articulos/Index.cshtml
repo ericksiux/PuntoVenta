@@ -1,31 +1,72 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model List<TEST.Models.ArticuloModel>
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        $(window).load(function () {
+
+            if (window.location.href.includes("Success")) {
+                ShowMessage('<b>Bien Hecho!</b>, El Articulo ha sido registrado correctamente', 'alert-success');
+            }
+
+        });
+
+        function EditarArticulo(element)
+        {
+            window.location.href = "/Articulos/Nuevo?ArticuloID=" + element.getAttribute("ClienteID");
+        }
+
+
+        function Nuevo() {
+            window.location.href = "/Articulos/Nuevo?ArticuloID=0";
+        }
+    </script>
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
-</div>
-
 <div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+    <div class="col-md-2">
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="col-md-8">
+        <div style="float:right;">
+            <a onclick="Nuevo();">
+                <img src="~/Content/Imagenes/NuevoArticulo.jpg" style="float: right;" />
+            </a>
+        </div>
+
+        <div style="width: 100%;margin-left: 15px;margin-bottom: 10px; color:#4cb2b4; float:left; clear:left;">
+            Articulos Registrados
+        </div>
+        <div style="width: 100%;background-color: #4cb2b4;height: 2px;float:left; clear:left;">
+
+        </div>
+        <div style="width: 96%; margin-left:2%; background-color:#fececd; height:28px; color:#998c66;float:left; clear:left;">
+            <div style="width: 15%; float:left;padding: 4px;">
+                Clave Articulo
+            </div>
+            <div style="width: 13%; float:left;padding: 4px;">
+                Descripción
+            </div>
+            <div style="width: 40%; float:left;padding: 4px;">
+
+            </div>
+        </div>
+
+        @foreach (var item in Model)
+        {
+            <div style="width: 96%; margin-left:2%; background-color:#fececd; height:28px; color:#1e1e1e;float:left; clear:left;">
+                <div style="width: 15%; float:left;padding: 4px;">
+                    @item.ArticuloID.ToString("000")
+                </div>
+                <div style="width: 40%; float:left;padding: 4px;">
+                    @item.Descripcion
+                </div>
+                <div style="width: 13%; float:left;padding: 4px;">
+                    <a ClienteID="@item.ArticuloID" onclick="EditarArticulo(this);"><img src="~/Content/Imagenes/Editar.jpg" style="height:25px;" /></a>
+                </div>
+            </div>
+
+
+        }
     </div>
 </div>

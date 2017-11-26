@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace TEST.DTO
+namespace TEST.Models
 {
-    public class ConfiguracionGeneralDTO
+    public class ConfiguracionGeneralModel
     {
         public decimal TasaFinanciamiento { get; set; }
         public decimal PorcentajeEnganche { get; set; }

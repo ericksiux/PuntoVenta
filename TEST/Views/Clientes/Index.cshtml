@@ -7,8 +7,7 @@
         $(window).load(function () {
 
             if (window.location.href.includes("Success")) {
-                $("#MsjGlobal").html('<b>Bien Hecho!</b>, El cliente ha sido registrado correctamente');
-                $("#MsjGlobal").show(0).delay(5000).hide(0);
+                ShowMessage('<b>Bien Hecho!</b>, El cliente ha sido registrado correctamente', 'alert-success');
             }
 
         });

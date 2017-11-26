@@ -107,8 +107,7 @@
                 if (clientes[prop].DescripcionCompleta == clavearticulo) {
 
                     if (clientes[prop].Existencia == 0) {
-                        $("#MenssagesSection").html('El artículo seleccionado no cuenta con existencia, favor de verificar');
-                        $("#MenssagesSection").show(0).delay(5000).hide(0);
+                        ShowMessage('El artículo seleccionado no cuenta con existencia, favor de verificar', 'alert-danger');
                         return;
                     }
 
@@ -166,9 +165,7 @@
             $("#" + element.getAttribute("GUID")).html(valor);
 
             if (parseInt(element.value) > parseInt(element.getAttribute("Existencia"))) {
-                debugger
-                $("#MenssagesSection").html('El la cantidad seleccionada es mayor a la existencia');
-                $("#MenssagesSection").show(0).delay(2000).hide(0);
+                ShowMessage('La cantidad seleccionada es mayor a la existencia', 'alert-danger');
                 return;
             }
 
@@ -232,8 +229,7 @@
             //ToDo Validar Existencia
 
             if (MostrarError) {
-                $("#MenssagesSection").html('Los datos ingresados no son correctos, favor de verificar');
-                $("#MenssagesSection").show(0).delay(5000).hide(0);
+                ShowMessage('Los datos ingresados no son correctos, favor de verificar', 'alert-danger');
                 return;
             }
 
@@ -265,8 +261,7 @@
             var plazo = RadioHTML.filter(':checked').val();
 
             if (plazo == undefined) {
-                $("#MenssagesSection").html('Debe seleccionar un plazo para realizar el pago de su compra');
-                $("#MenssagesSection").show(0).delay(5000).hide(0);
+                ShowMessage('Debe seleccionar un plazo para realizar el pago de su compra', 'alert-danger');
                 return;
             }
 

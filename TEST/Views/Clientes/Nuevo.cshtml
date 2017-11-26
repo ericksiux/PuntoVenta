@@ -28,9 +28,7 @@
 
             if (CamposVacios.length > 0)
             {
-                $("#MsjGlobal").toggleClass("alert alert-error");
-                $("#MsjGlobal").html('No es posible continuar, debe ingresar ' + CamposVacios.join(" , ") + ' es obligatorio');
-                $("#MsjGlobal").show(0).delay(5000).hide(0);
+                ShowMessage('No es posible continuar, debe ingresar ' + CamposVacios.join(" , ") + ' es obligatorio', 'alert-danger');
                 return;
             }
 

@@ -1,31 +1,132 @@
-﻿@{
-    ViewBag.Title = "Home Page";
+﻿@model TEST.Models.ConfiguracionGeneralModel
+
+@section Scripts {
+    @Scripts.Render("~/bundles/jqueryval")
+
+    <script>
+        function GuardarConfiguracion() {
+
+            var CamposVacios = new Array;
+            var Errores = false;
+
+            if ($("#TxtTasaFinanciamiento").val() == "" || !$.isNumeric($("#TxtTasaFinanciamiento").val()))
+            {
+                CamposVacios.push('Tasa Financiamiento')
+            }
+
+            if ($("#TxtPorcentajeEnganche").val() == "" || !$.isNumeric($("#TxtPorcentajeEnganche").val())) {
+                CamposVacios.push('Porcentaje Enganche')
+            }
+
+            if ($("#TxtPlazoMaximo").val() == "" || !$.isNumeric($("#TxtPlazoMaximo").val())) {
+                CamposVacios.push('Plazo Máximo')
+            }
+
+            if (CamposVacios.length > 0)
+            {
+                ShowMessage('No es posible continuar, debe ingresar ' + CamposVacios.join(" , ") + ' es obligatorio', 'alert-danger');
+                return;
+            }
+
+            var configuracionParam = new Object();
+            configuracionParam.TasaFinanciamiento = parseFloat($("#TxtTasaFinanciamiento").val()).toFixed(2);
+            configuracionParam.PorcentajeEnganche = parseFloat($("#TxtPorcentajeEnganche").val()).toFixed(2);
+            configuracionParam.PlazoMaximo = parseInt($("#TxtPlazoMaximo").val());
+
+            $.ajax({
+                url: "/Configuracion/GuardarConfiguracion",
+                type: "POST",
+                data: configuracionParam,
+                cache: false,
+                dataType: "json",
+                success: function (result) {
+                    ShowMessage('Bien Hecho. La configuración ha sido registrada', 'alert-success');
+                },
+                error: function (xhr, ajaxOptions, thrownError) {
+                    alert(xhr.status);
+                    alert(thrownError);
+                }
+            });
+        }
+
+        function Cancelar() {
+            window.location.href = "/Home/Index";
+        }
+    </script>
+
+    <style type="text/css">
+        .DivConfig {
+            border: none;
+            padding: 3px;
+            border-radius: 5px;
+            -ms-border-radius: 5px;
+            -webkit-border-radius: 5px;
+            -moz-border-radius: 5px;
+            background-color: #347AB8;
+            color: rgba(255,255,255,0.7);
+        }
+    </style>
 }
 
-<div class="jumbotron">
-    <h1>ASP.NET</h1>
-    <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
-    <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
+<div style="width:100%; float:left;">
+    <div style="width:100%; float:left; height: 40px; background-color:aquamarine; border-radius: 5px 5px 0px 0px;">
+        <span style="padding: 10px;float: left;">Registro de Clientes</span>
+    </div>
+    <div style="width:100%; float:left; border: 1px solid aquamarine;">
+        <div style="float:right; color: green;margin-right:20%;">
+            
+        </div>
+
+
+        <div class="row" style="margin-top:40px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Tasa Financiamiento:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtTasaFinanciamiento" value="@Model.TasaFinanciamiento">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                % Enganche:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtPorcentajeEnganche" value="@Model.PorcentajeEnganche">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+
+        <div class="row" style="margin-top:10px;">
+            <div class="col-md-2">
+            </div>
+            <div class="col-md-2" style="text-align:right">
+                Plazo Máximo:
+            </div>
+            <div class="col-md-2">
+                <input type="text" id="TxtPlazoMaximo" value="@Model.PlazoMaximo">
+            </div>
+            <div class="col-md-2">
+            </div>
+        </div>
+    </div>
 </div>
 
-<div class="row">
-    <div class="col-md-4">
-        <h2>Getting started</h2>
-        <p>
-            ASP.NET MVC gives you a powerful, patterns-based way to build dynamic websites that
-            enables a clean separation of concerns and gives you full control over markup
-            for enjoyable, agile development.
-        </p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301865">Learn more &raquo;</a></p>
+
+
+<div id="DivGuardar" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:40px;">
+    <div class="DivConfig" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+        Cancelar
     </div>
-    <div class="col-md-4">
-        <h2>Get more libraries</h2>
-        <p>NuGet is a free Visual Studio extension that makes it easy to add, remove, and update libraries and tools in Visual Studio projects.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301866">Learn more &raquo;</a></p>
-    </div>
-    <div class="col-md-4">
-        <h2>Web Hosting</h2>
-        <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
-        <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
+    <div class="DivConfig" onclick="GuardarConfiguracion();" style="width:60px; float:left;">
+        Guardar
     </div>
 </div>
