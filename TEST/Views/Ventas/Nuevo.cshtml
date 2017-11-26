@@ -333,11 +333,11 @@
     </div>
     <div class="col-md-8">
         <div style="width:100%; float:left;">
-            <div style="width:100%; float:left; height: 40px; background-color:aquamarine; border-radius: 5px 5px 0px 0px;">
-                <span style="padding: 10px;float: left;"> Registro de Ventas</span>
+            <div style="width:100%; float:left; height: 40px; background-color:#347AB8; border-radius: 5px 5px 0px 0px;">
+                <span style="padding: 10px;float: left; color:white;"> Registro de Ventas</span>
             </div>
-            <div style="width:100%; float:left; border: 1px solid aquamarine;">
-                <div style="float:right; color: green;">
+            <div style="width:100%; float:left; border: 1px solid #347AB8;">
+                <div style="float:right;color: green;font-size: 12px;font-weight: bold;padding: 14px;">
                     Folio Venta: @Model.FoliadorVentaID.ToString("0000")
                 </div>
 
@@ -352,7 +352,7 @@
                     <span>RFC: </span>
                     <span id="TxtRFC"></span>
                 </div>
-                <div style="height:1px; width:80%; margin-left:10%; background-color: green; float:left"></div>
+                <div style="height:0px; width:80%; margin-left:10%; background-color: green; float:left"></div>
                 <div style="float:left;margin-left:25px; margin-top:10px; margin-bottom:10px;">
                     <div class="DivVenta" style="width:60px; float:left;">
                         Articulo:
@@ -362,38 +362,38 @@
                     </div>
                     <a onclick="AgregarArticulo();"><img src="~/Content/Imagenes/mas.jpg" style="height:25px;" /></a>
                 </div>
-                <div style="width:100%; float:left; border: 1px solid gray;"></div>
+                <div style="width:98%; margin-left:1%; float:left; border: 1px solid gray;"></div>
 
-                <div id="GridArticulos">
-                    <div style="float:left; width:100%;">
+                <div id="GridArticulos" style="padding-left:10px; padding-right:10px;">
+                    <div style="float:left; width:100%; background-color:#EBEBEB; padding-top:5px; padding-bottom:5px;">
                         <div style="float:left;width:250px;">Descripción Articulo</div>
                         <div style="float:left;width:150px;">Modelo</div>
-                        <div style="float:left;width:100px;">Cantidad</div>
-                        <div style="float:left;width:100px;">Precio</div>
-                        <div style="float:left;width:100px;">Importe</div>
+                        <div style="float:left;width:100px;text-align:center;">Cantidad</div>
+                        <div style="float:left;width:100px;text-align:center;">Precio</div>
+                        <div style="float:left;width:100px;text-align:center;">Importe</div>
                     </div>
                 </div>
 
-                <div style="width:100%; float:left; border: 1px solid gray; margin-top:50px;"></div>
+                <div style="width:98%; margin-left:1%;float:left; border: 1px solid gray; margin-top:50px;"></div>
 
-                <div style="float:right;  font-size:12px; text-align:right; margin-right:12px; margin-bottom:20px;">
+                <div style="float:right; font-size:12px; text-align:right; margin-right:12px; margin-bottom:20px;">
 
                     <div style="float:right; width:100px; margin-top:10px;"><span id="EngancheVenta">0.00</span></div>
-                    <div style="float:right;width: 65px;background-color:gray;padding-right: 5px;padding-left: 5px; margin-top:10px;">Enganche:</div>
+                    <div style="float:right;width: 65px;background-color:#B2B2B2;padding-right: 5px;padding-left: 5px; margin-top:10px;">Enganche:</div>
                     <br />
                     <div style="float:right; width:100px; margin-top:10px;"><span id="BonificacionVenta">0.00</span></div>
-                    <div style="float:right;width: 150px;background-color:gray;padding-right: 5px;padding-left: 5px; margin-top:10px;">Bonificación Enganche:</div>
+                    <div style="float:right;width: 150px;background-color:#B2B2B2;padding-right: 5px;padding-left: 5px; margin-top:10px;">Bonificación Enganche:</div>
                     <br />
                     <div style="float:right; width:100px; margin-top:10px;"><span id="TotalVenta">0.00</span></div>
-                    <div style="float:right;width: 150px;background-color:gray;padding-right: 5px;padding-left: 5px; margin-top:10px;">Total:</div>
+                    <div style="float:right;width: 150px;background-color:#B2B2B2;padding-right: 5px;padding-left: 5px; margin-top:10px;">Total:</div>
                 </div>
             </div>
 
             <div id="DivSiguiente" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:20px;">
-                <div class="DivVenta" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+                <div class="DivVenta" onclick="Cancelar();" style="width:60px;float:left;margin-right:25px;background: green;padding: 6px;">
                     Cancelar
                 </div>
-                <div class="DivVenta" onclick="ValidarVenta();" style="width:60px; float:left;">
+                <div class="DivVenta" onclick="ValidarVenta();" style="width:60px; float:left;background: green;padding: 6px;">
                     Siguiente
                 </div>
             </div>
@@ -403,10 +403,10 @@
             </div>
 
             <div id="DivGuardar" style="float:right;  font-size:12px; text-align:right; margin-right:12px;margin-top:20px; display:none;">
-                <div class="DivVenta" onclick="Cancelar();" style="width:60px; float:left; margin-right:25px;">
+                <div class="DivVenta" onclick="Cancelar();" style="width:60px;float:left;margin-right:25px;background: green;padding: 6px;">
                     Cancelar
                 </div>
-                <div class="DivVenta" onclick="GuardarVenta();" style="width:60px; float:left;">
+                <div class="DivVenta" onclick="GuardarVenta();" style="width:60px; float:left;background: green;padding: 6px;">
                     Guardar
                 </div>
             </div>

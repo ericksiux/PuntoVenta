@@ -1,21 +1,21 @@
 ﻿@model List<TEST.Models.GridArticuloVentaModel>
 
-<div style="float:left; width:100%;">
+<div style="float:left; width:100%; background-color:#EBEBEB; padding-top:5px; padding-bottom:5px;">
     <div style="float:left;width:250px;">Descripción Articulo</div>
     <div style="float:left;width:150px;">Modelo</div>
-    <div style="float:left;width:100px;">Cantidad</div>
-    <div style="float:left;width:100px;">Precio</div>
-    <div style="float:left;width:100px;">Importe</div>
+    <div style="float:left;width:100px; text-align:center;">Cantidad</div>
+    <div style="float:left;width:100px; text-align:center;">Precio</div>
+    <div style="float:left;width:100px; text-align:center;">Importe</div>
 </div>
 
     @foreach (var item in Model)
     {
-        <div style="float:left; width:100%;" id="GridDetalle">
+        <div style="float:left; width:100%; color:#347AB8;padding-top:5px; padding-bottom:5px;" id="GridDetalle">
             <div style="float:left;width:250px;">@item.Descripcion</div>
             <div style="float:left;width:150px;">@item.DescripcionModelo</div>
-            <div style="float:left;width:100px;"> <input class="item" type="text" value="@item.Cantidad" PrecioVenta="@item.PrecioVenta.ToString("0.00")" Existencia="@item.Existencia" onKeyPress="ValidarExistencia(this);" onKeyUp="ValidarExistencia(this);"  onblur="ValidarExistencia(this);" GUID="@item.GUID" style="width: 30px; text-align: right;">   </div>
-            <div style="float:left;width:100px;">@item.PrecioVenta.ToString("0.00")</div>
-            <div style="float:left;width:100px;" ><span class="importe" ID="@item.GUID">@item.Importe.ToString("0.00")</span></div>
+            <div style="float:left;width:100px; text-align:center;"> <input class="item" type="text" value="@item.Cantidad" PrecioVenta="@item.PrecioVenta.ToString("0.00")" Existencia="@item.Existencia" onKeyPress="ValidarExistencia(this);" onKeyUp="ValidarExistencia(this);"  onblur="ValidarExistencia(this);" GUID="@item.GUID" style="width: 30px; text-align: right;">   </div>
+            <div style="float:left;width:80px; text-align:right;">@item.PrecioVenta.ToString("0.00")</div>
+            <div style="float:left;width: 95px;text-align:right;margin-right: 15px;" ><span class="importe" ID="@item.GUID">@item.Importe.ToString("0.00")</span></div>
             <div style="float:left;width:20px;" ><a GUID="@item.GUID" onclick="EliminarArticulo(this);"><img src="~/Content/Imagenes/x.jpg" style="height:25px;" /></a></div>
         </div>
 

@@ -27,43 +27,43 @@
         <div style="width: 100%;margin-left: 15px;margin-bottom: 10px; color:#4cb2b4; float:left; clear:left;">
             Ventas Activas
         </div>
-        <div style="width: 100%;background-color: #4cb2b4;height: 2px;float:left; clear:left;">
+        <div style="width: 100%;background-color: #4470AA;height: 1px;float:left; clear:left;">
 
         </div>
-        <div style="width: 96%; margin-left:2%; background-color:#fececd; height:28px; color:#998c66;float:left; clear:left;">
-            <div style="width: 15%; float:left;padding: 4px;">
+        <div style="width: 96%; margin-left:2%; background-color:#89CBEF; height:28px; color:#0A6FA6;float:left; clear:left;">
+            <div style="width: 15%; float:left;padding: 4px; text-align:center:">
                 Folio Venta
             </div>
-            <div style="width: 13%; float:left;padding: 4px;">
+            <div style="width: 13%; float:left;padding: 4px;text-align:center:">
                 Clave Cliente
             </div>
-            <div style="width: 23%; float:left;padding: 4px;">
+            <div style="width: 35%; float:left;padding: 4px;">
                 Nombre
             </div>
-            <div style="width: 11%; float:left;padding: 4px;">
+            <div style="width: 11%; float:left;padding: 4px;text-align:center:">
                 Total
             </div>
-            <div style="width: 18%; float:left;padding: 4px;">
+            <div style="width: 18%; float:left;padding: 4px;text-align:center:">
                 Fecha
             </div>
         </div>
 
         @foreach (var item in Model)
         {
-            <div style="width: 96%; margin-left:2%; background-color:#fececd; height:28px; color:#1e1e1e;float:left; clear:left;">
-                <div style="width: 15%; float:left;padding: 4px;">
+            <div style="width: 95.5%;margin-left: 2.2%;background-color:#ECF0FD;height:28px;color:black;float:left;clear:left;">
+                <div style="width: 15%; float:left;padding: 4px;text-align:center;">
                     @item.FoliadorVentaID.ToString("000")
                 </div>
-                <div style="width: 13%; float:left;padding: 4px;">
+                <div style="width: 13%; float:left;padding: 4px; text-align:center;">
                     @item.ClienteID.ToString("000")
                 </div>
-                <div style="width: 23%; float:left;padding: 4px;">
+                <div style="width: 35%; float:left;padding: 4px;">
                     @item.NombreCompleto
                 </div>
-                <div style="width: 11%; float:left;padding: 4px;">
+                <div style="width: 11%; float:left;padding: 4px;text-align:right;">
                     @item.TotalAdeudo.ToString("0.00")
                 </div>
-                <div style="width: 18%; float:left;padding: 4px;">
+                <div style="width: 18%; float:left;padding: 4px;text-align:center;">
                     @item.Fecha.ToString("dd/MM/yyyy")
                 </div>
             </div>
